@@ -1,39 +1,50 @@
 import { serve } from "bun";
+import { nanoid } from "nanoid";
 import index from "./index.html";
+import { initDb, saveChat, getChat } from "./db";
+
+await initDb();
 
 const server = serve({
+  port: process.env.PORT || 3000,
   routes: {
-    // Serve index.html for all unmatched routes.
-    "/*": index,
+    "/api/chats": {
+      async POST(req) {
+        try {
+          const { content } = await req.json();
+          if (!content || typeof content !== "string") {
+            return Response.json({ error: "content required" }, { status: 400 });
+          }
+          const id = nanoid(10);
+          await saveChat(id, content);
+          return Response.json({ id });
+        } catch (e) {
+          console.error("Failed to save chat:", e);
+          return Response.json({ error: "failed to save" }, { status: 500 });
+        }
+      },
+    },
 
-    "/api/hello": {
+    "/api/chats/:id": {
       async GET(req) {
+        const { id } = req.params;
+        const chat = await getChat(id);
+        if (!chat) {
+          return Response.json({ error: "not found" }, { status: 404 });
+        }
         return Response.json({
-          message: "Hello, world!",
-          method: "GET",
-        });
-      },
-      async PUT(req) {
-        return Response.json({
-          message: "Hello, world!",
-          method: "PUT",
+          id: chat.id,
+          content: chat.raw_content,
+          createdAt: chat.created_at,
         });
       },
     },
 
-    "/api/hello/:name": async req => {
-      const name = req.params.name;
-      return Response.json({
-        message: `Hello, ${name}!`,
-      });
-    },
+    "/*": index,
   },
 
   development: process.env.NODE_ENV !== "production" && {
-    // Enable browser hot reloading in development
     hmr: true,
-
-    // Echo console logs from the browser to the server
     console: true,
   },
 });

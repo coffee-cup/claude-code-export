@@ -1,0 +1,347 @@
+
+ * ▐▛███▜▌ *   Claude Code v2.0.76
+* ▝▜█████▛▘ *  Opus 4.5 · Claude Max
+ *  ▘▘ ▝▝  *   ~/dev/railway/mono
+
+> investigate this 
+https://linear.app/railway/issue/PRO-5419/reported-referral-link-not-working
+ 
+
+⏺ /railway-dev:investigate
+
+⏺ plugin:linear:linear - get_issue (MCP)(id: "PRO-5419")
+  ⎿  {                                                                     
+       "id": "05012372-733b-4001-bddb-d9d54928b851",
+       "identifier": "PRO-5419",
+     … +103 lines (ctrl+o to expand)
+
+⏺ plugin:linear:linear - list_comments (MCP)(issueId: "PRO-5419")
+  ⎿  [                                                                     
+       {
+         "id": "839059df-e246-4103-8be4-aedd16131011",
+     … +120 lines (ctrl+o to expand)
+
+⏺ This is an urgent issue with 9 linked Central Station threads. Let me fetch all of them to understand the pattern:
+
+⏺ Bash(python /Users/jr/dev/railway/railway-dev-claude-plugin/skills/central-sta
+      tion/scripts/fetch_thread.py
+      "https://station.railway.com/support/my-referal-link-doesn…)
+  ⎿  {                              
+       "data": {
+         "thread": {
+     … +278 lines (ctrl+o to expand)
+
+⏺ Bash(python /Users/jr/dev/railway/railway-dev-claude-plugin/skills/central-sta
+      tion/scripts/fetch_thread.py
+      "https://station.railway.com/support/referral-credit-not-a…)
+  ⎿  {                              
+       "data": {
+         "thread": {
+     … +106 lines (ctrl+o to expand)
+
+⏺ Bash(python /Users/jr/dev/railway/railway-dev-claude-plugin/skills/central-sta
+      tion/scripts/fetch_thread.py
+      "https://station.railway.com/support/missing-referrals-88f…)
+  ⎿  {                              
+       "data": {
+         "thread": {
+     … +105 lines (ctrl+o to expand)
+
+⏺ Bash(python /Users/jr/dev/railway/railway-dev-claude-plugin/skills/central-sta
+      tion/scripts/fetch_thread.py
+      "https://station.railway.com/support/refferal-b2e2801c")
+  ⎿  {                              
+       "data": {
+         "thread": {
+     … +115 lines (ctrl+o to expand)
+
+⏺ Bash(python /Users/jr/dev/railway/railway-dev-claude-plugin/skills/central-sta
+      tion/scripts/fetch_thread.py
+      "https://station.railway.com/support/referral-code-didn-t-…)
+  ⎿  {                              
+       "data": {
+         "thread": {
+     … +142 lines (ctrl+o to expand)
+
+⏺ Bash(python /Users/jr/dev/railway/railway-dev-claude-plugin/skills/central-sta
+      tion/scripts/fetch_thread.py
+      "https://station.railway.com/support/i-referred-another-ac…)
+  ⎿  {                              
+       "data": {
+         "thread": {
+     … +380 lines (ctrl+o to expand)
+
+⏺ Bash(python /Users/jr/dev/railway/railway-dev-claude-plugin/skills/central-sta
+      tion/scripts/fetch_thread.py
+      "https://station.railway.com/support/referral-commission-n…)
+  ⎿  {                              
+       "data": {
+         "thread": {
+     … +389 lines (ctrl+o to expand)
+
+⏺ Bash(python /Users/jr/dev/railway/railway-dev-claude-plugin/skills/central-sta
+      tion/scripts/fetch_thread.py
+      "https://station.railway.com/support/referral-not-being-tr…)
+  ⎿  {                              
+       "data": {
+         "thread": {
+     … +150 lines (ctrl+o to expand)
+
+⏺ Bash(python /Users/jr/dev/railway/railway-dev-claude-plugin/skills/central-sta
+      tion/scripts/fetch_thread.py
+      "https://station.railway.com/support/referral-didn-t-work-…)
+  ⎿  {                              
+       "data": {
+         "thread": {
+     … +327 lines (ctrl+o to expand)
+
+⏺ Issue Overview
+
+  | Field      | Value                              |
+  |------------|------------------------------------|
+  | Title      | Reported Referral Link Not Working |
+  | Identifier | PRO-5419                           |
+  | Priority   | 🔴 Urgent                          |
+  | Status     | Triage                             |
+  | Created    | Dec 27, 2025                       |
+  | Labels     | Product on-call                    |
+  | Assignee   | None                               |
+
+  Central Station Threads (9 total)
+
+  | Thread                          | Customer                | Referee Email                    | Issue                                                   | Status |
+  |---------------------------------|-------------------------|----------------------------------|---------------------------------------------------------|--------|
+  | my-referal-link-doesn-t-working | ikrom                   | levelup@digitalamoeba.id         | Friend upgraded to Hobby, no credits                    | SOLVED |
+  | referral-credit-not-applied-20  | (anon)                  | -                                | Used link N2L9aT, no $20 credit                         | Open   |
+  | missing-referrals               | johannett321            | contact@enthemed.com             | Used "sign in" → "login with email", Pro plan, $20 paid | Open   |
+  | refferal                        | lavanshugarg4           | -                                | Referred 2 friends, 0 showing                           | Open   |
+  | referral-code-didn-t-work       | dechaun                 | administration@leadstoloyals.com | Used "login with email", Pro plan                       | OPEN   |
+  | i-referred-another-account      | pateln123               | hi@discadia.com                  | Pro plan, hundreds $/mo, link DxH8H_                    | OPEN   |
+  | referral-commission-not-applied | ricasco                 | assistenzadentaldesk@gmail.com   | 2nd referral not tracked (1st was)                      | SOLVED |
+  | referral-not-being-tracked      | nocodecat.dev@gmail.com | hongsw.dsu@gmail.com             | Google signin, code sjfXP9, paid $5                     | SOLVED |
+  | referral-didn-t-work            | ahmed13199              | atlas.tech.department@gmail.com  | No $20 for referee, no 15% for referrer                 | Open   |
+
+  Pattern Analysis
+
+  Common themes:
+  1. Referral link format: https://railway.com?referralCode=<CODE> - users clicking these links but tracking not working
+  2. Multiple auth flows affected: Google signin, email login, "sign in" → "login with email"
+  3. Happens regardless of payment - even after referee pays first invoice or upgrades to Pro
+  4. Both parties affected: referrer doesn't get credits, referee doesn't get $20
+
+  Specific clue from johannett321:
+  "The way my company signed up, was by clicking my referral link, and pressing the 'sign in' button, then 'Log in using email', and lastly typed in the email and pressed 'Continue with Email'."
+
+  Possible root causes:
+  1. referralCode query param lost during auth redirects (especially OAuth flows)
+  2. Race condition between session creation and referral tracking
+  3. Referral code not persisted across page navigations during signup
+  4. Issue with specific auth flows (email magic link vs OAuth)
+
+  Key Questions
+
+  1. Where is the referralCode param captured and stored during signup flow?
+  2. Is there middleware/hook that persists it across auth redirects?
+  3. When exactly is the referral relationship created (signup vs first payment)?
+
+  ---
+  Would you like me to investigate the codebase for potential causes?
+
+> yes look at the code too 
+  ⎿ ⧉ Selected 1 lines from 
+    packages/backboard/src/controllers/projects/project.ts in Cursor
+
+⏺ Explore(Search referral tracking code)
+  ⎿  Done (32 tool uses · 84.9k tokens · 1m 5s)                            
+
+⏺ Good findings. Let me verify these issues by looking at the key files directly:
+
+⏺ Read(packages/backboard/src/controllers/users/referralInfo.ts)
+  ⎿  Read 383 lines
+
+⏺ Read(packages/frontend/src/hooks/useQueryParamToLocalStorage.tsx)
+  ⎿  Read 29 lines
+
+⏺ Read(packages/backboard/src/handlers/http/routes/login/google.ts)
+  ⎿  Read 286 lines
+  ⎿  Loaded packages/backboard/CLAUDE.md
+  ⎿  Loaded packages/frontend/CLAUDE.md
+
+⏺ Let me look at the Google auth strategy and the auth controller to trace where the referral code might get lost:
+
+⏺ Read(packages/backboard/src/auth/strategies/google.ts)
+  ⎿  Read 361 lines
+
+⏺ Read(packages/backboard/src/controllers/users/auth.ts)
+  ⎿  Read 435 lines
+
+⏺ Let me check the workspace creation and the frontend user provider to trace the full flow:
+
+⏺ Read(packages/backboard/src/controllers/workspaces/index.ts)
+  ⎿  Read 150 lines
+
+⏺ Read(packages/frontend/src/providers/user.tsx)
+  ⎿  Read 150 lines
+
+⏺ Read(packages/backboard/src/controllers/workspaces/create.ts)
+  ⎿  Read 443 lines
+
+⏺ Search(pattern: "useQueryParamToLocalStorage", path: "packages/frontend",
+        output_mode: "content")
+  ⎿  Found 12 lines (ctrl+o to expand)
+
+⏺ I see a potential issue! The useQueryParamToLocalStorage hook is only on specific pages. Let me check the main landing/index page:
+
+⏺ Search(pattern: "LS_REFERRAL_CODE_KEY|useQueryParamToLocalStorage", path:
+        "packages/frontend/src/pages")
+  ⎿  Found 4 files (ctrl+o to expand)
+
+⏺ Bash(ls -la /Users/jr/dev/railway/mono/packages/frontend/src/pages/index.tsx
+      2>/dev/null || ls -la
+      /Users/jr/dev/railway/mono/packages/frontend/src/pages/ | head -30)
+  ⎿ .rw-r--r--@ 3.9k jr  5 Jan 13:31 /Users/jr/dev/railway/mono/packages/fr
+    ontend/src/pages/index.tsx
+
+
+⏺ Read(packages/frontend/src/pages/index.tsx)
+  ⎿  Read 122 lines
+
+⏺ 🚨 FOUND THE BUG!
+
+  The main landing page (index.tsx) does NOT have the useQueryParamToLocalStorage hook!
+
+  When users click a referral link like https://railway.com?referralCode=N2L9aT, they land on the index page which never captures the referral code to localStorage.
+
+  Let me verify this is the only missing page and check the auth pages:
+
+⏺ Bash(ls /Users/jr/dev/railway/mono/packages/frontend/src/pages/auth/)
+  ⎿  discord.tsx                  
+     error.tsx
+     github-installation-setup.tsx
+     … +4 lines (ctrl+o to expand)
+
+⏺ Search(pattern: "useQueryParamToLocalStorage|LS_REFERRAL_CODE_KEY", path:
+        "packages/frontend/src/pages/auth")
+  ⎿  Found 0 files 
+
+⏺ Search(pattern: "useQueryParamToLocalStorage|LS_REFERRAL_CODE_KEY", path:
+        "packages/frontend/src/components/secret-landing")
+  ⎿  Found 0 files 
+
+⏺ Search(pattern: "useQueryParamToLocalStorage|LS_REFERRAL_CODE_KEY", path:
+        "packages/frontend/src/components/layouts")
+  ⎿  Found 0 files 
+
+⏺ Let me check if there's any global handling in _app.tsx:
+
+⏺ Search(pattern:
+        "referralCode|LS_REFERRAL_CODE_KEY|useQueryParamToLocalStorage", path:
+        "packages/frontend/src/pages/_app.tsx", output_mode: "content")
+  ⎿  Found 0 lines 
+
+⏺ ---
+  🎯 Root Cause Identified
+
+  The main landing page (index.tsx) is missing the useQueryParamToLocalStorage hook.
+
+  The Bug Flow:
+
+  1. User clicks referral link: https://railway.com?referralCode=N2L9aT
+  2. User lands on index.tsx (main landing page)
+  3. ❌ BUG: referralCode query param is NOT captured to localStorage
+  4. User clicks "Sign up" / auth button
+  5. Frontend reads from localStorage → empty!
+  6. No referral code passed to backend
+  7. Referral tracking fails completely
+
+  Evidence:
+
+  Pages WITH the hook (working):
+  - enterprise.tsx
+  - old-landing.tsx
+  - new/template/[code].tsx
+  - customers.tsx
+
+  Pages WITHOUT the hook (broken):
+  - index.tsx ← Main landing page - this is where referral links go!
+  - All /auth/* pages
+
+  The Fix:
+
+  Add the useQueryParamToLocalStorage hook to index.tsx:
+
+  import { useQueryParamToLocalStorage } from "../hooks/useQueryParamToLocalStorage";
+  import { LS_REFERRAL_CODE_KEY, LS_CAMPAIGN_REFERRAL_CODE_KEY } from "../constants/referrals";
+
+  const SecretLanding: CustomNextPage<Props> = ({ stats }) => {
+    useSetDocumentVisibility();
+    useQueryParamToLocalStorage(LS_REFERRAL_CODE_KEY);  // ADD THIS
+    useQueryParamToLocalStorage(LS_CAMPAIGN_REFERRAL_CODE_KEY);  // ADD THIS
+    // ...
+  };
+
+  Alternative (better): Add it to _app.tsx so it works globally on ALL pages.
+
+  ---
+  Would you like me to implement the fix?
+
+> yes fix it please. just add to the homepage, not _app.tsx 
+
+⏺ Update(packages/frontend/src/pages/index.tsx)
+  ⎿  Added 5 lines                                                       
+       5  import { JetBrainsMono } from "../components/fonts/JetBrainsMon
+          o";
+       6  import { BaseLayout } from "../components/layouts/BaseLayout";
+       7  import { SecretLandingPage } from "../components/secret-landing
+          /SecretLandingPage";
+       8 +import {                                                       
+       9 +  LS_CAMPAIGN_REFERRAL_CODE_KEY,                               
+      10 +  LS_REFERRAL_CODE_KEY,                                        
+      11 +} from "../constants/referrals";                               
+      12  import { LazyAnimationProvider } from "../components/theatrejs/
+          LazyAnimationProvider";
+      13  import { useSetDocumentVisibility } from "../hooks/useDocumentV
+          isibility";
+      14 +import { useQueryParamToLocalStorage } from "../hooks/useQueryP
+         +aramToLocalStorage";                                           
+      15  import type { PublicStats } from "../hooks/usePublicStats";
+      16  import { getGraphqlV2ClientSSR } from "../ssr";
+      17  
+
+⏺ Update(packages/frontend/src/pages/index.tsx)
+  ⎿  Added 2 lines                                                       
+      100  
+      101  const SecretLanding: CustomNextPage<Props> = ({ stats }) => {
+      102    useSetDocumentVisibility();
+      103 +  useQueryParamToLocalStorage(LS_REFERRAL_CODE_KEY);          
+      104 +  useQueryParamToLocalStorage(LS_CAMPAIGN_REFERRAL_CODE_KEY); 
+      105  
+      106    return (
+      107      <BaseLayout seo={LANDING_SEO}>
+
+⏺ Let me verify the fix and run typecheck:
+
+⏺ Bash(dev run pnpm --filter @railway/frontend run typecheck 2>&1 | head -50)
+  ⎿  Interrupted · What should Claude do instead?
+
+> /diagnostics 
+
+⏺ ide - getDiagnostics (MCP)(uri: "file:///Users/jr/dev/railway/mono/packages/fr
+                            ontend/src/pages/index.tsx")
+  ⎿ [                                                                      
+      {
+        "uri": "file:///Users/jr/dev/railway/mono/packages/frontend/src/pag
+    … +5 lines (ctrl+o to expand)
+
+
+⏺ No diagnostics errors. The fix is clean.
+
+  Summary of fix:
+
+  packages/frontend/src/pages/index.tsx - Added the useQueryParamToLocalStorage hook to capture referral codes from URL query params when users land on the homepage via referral links like https://railway.com?referralCode=N2L9aT.
+
+  This ensures the referralCode and ref params are stored in localStorage before users proceed to sign up, so the referral tracking works correctly.
+
+
+
+
