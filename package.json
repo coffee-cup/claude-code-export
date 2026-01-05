@@ -1,0 +1,9 @@
+{
+  "name": "claude-code-export",
+  "private": true,
+  "workspaces": ["apps/*", "packages/*"],
+  "scripts": {
+    "dev:web": "bun --filter web dev --watch",
+    "start:web": "bun --filter web start"
+  }
+}
