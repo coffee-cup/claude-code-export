@@ -22,42 +22,51 @@ function ToolCallBlock({ tool }: { tool: ToolCall }) {
   );
 }
 
+type SegmentType = "text" | "table" | "output";
+
 function TextBlock({ text }: { text: string }) {
-  // Split text into segments: regular text vs table blocks
   const lines = text.split("\n");
-  const segments: { type: "text" | "table"; content: string }[] = [];
-  let currentSegment: { type: "text" | "table"; lines: string[] } | null = null;
+  const segments: { type: SegmentType; content: string }[] = [];
+  let currentSegment: { type: SegmentType; lines: string[] } | null = null;
+
+  const pushSegment = () => {
+    if (currentSegment) {
+      segments.push({ type: currentSegment.type, content: currentSegment.lines.join("\n") });
+    }
+  };
 
   for (const line of lines) {
     const isTableLine = line.trim().startsWith("|") || (line.includes("|") && line.trim().match(/^\|?[-|:]+\|?$/));
+    const isOutputLine = line.includes("⎿");
 
-    if (isTableLine) {
-      if (currentSegment?.type === "table") {
-        currentSegment.lines.push(line);
-      } else {
-        if (currentSegment) segments.push({ type: currentSegment.type, content: currentSegment.lines.join("\n") });
-        currentSegment = { type: "table", lines: [line] };
-      }
+    let segmentType: SegmentType = "text";
+    if (isTableLine) segmentType = "table";
+    else if (isOutputLine) segmentType = "output";
+
+    if (currentSegment && currentSegment.type === segmentType) {
+      currentSegment.lines.push(line);
     } else {
-      if (currentSegment?.type === "text") {
-        currentSegment.lines.push(line);
-      } else {
-        if (currentSegment) segments.push({ type: currentSegment.type, content: currentSegment.lines.join("\n") });
-        currentSegment = { type: "text", lines: [line] };
-      }
+      pushSegment();
+      currentSegment = { type: segmentType, lines: [line] };
     }
   }
-  if (currentSegment) segments.push({ type: currentSegment.type, content: currentSegment.lines.join("\n") });
+  pushSegment();
 
   return (
     <div className="message-text">
-      {segments.map((seg, i) =>
-        seg.type === "table" ? (
-          <div key={i} className="table-block">{seg.content}</div>
-        ) : (
-          <span key={i}>{seg.content}</span>
-        )
-      )}
+      {segments.map((seg, i) => {
+        if (seg.type === "table") {
+          return <div key={i} className="table-block">{seg.content}</div>;
+        }
+        if (seg.type === "output") {
+          const cleaned = seg.content
+            .split("\n")
+            .map(l => l.replace(/^\s*⎿\s*/, ""))
+            .join("\n");
+          return <pre key={i} className="output-block">{cleaned}</pre>;
+        }
+        return <span key={i}>{seg.content}</span>;
+      })}
     </div>
   );
 }

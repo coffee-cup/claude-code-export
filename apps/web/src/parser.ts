@@ -76,6 +76,7 @@ export function parseExport(input: string): ChatExport {
   let collectingMcpParams = false;
   let paramLines: string[] = [];
   let toolName = "";
+  let outputBaseIndent = 0;
 
   const finalizeToolCall = () => {
     if (currentToolCall && currentTurn) {
@@ -86,6 +87,7 @@ export function parseExport(input: string): ChatExport {
     }
     currentToolCall = null;
     outputLines = [];
+    outputBaseIndent = 0;
   };
 
   const finalizeTurn = () => {
@@ -139,8 +141,8 @@ export function parseExport(input: string): ChatExport {
       }
     }
 
-    // User message: "> text"
-    if (line.startsWith("> ")) {
+    // User message: "> text" (must start at column 0, no indentation)
+    if (/^> /.test(line)) {
       finalizeTurn();
       currentTurn = { role: "user", content: [] };
       const text = line.slice(2);
@@ -150,8 +152,8 @@ export function parseExport(input: string): ChatExport {
       continue;
     }
 
-    // Assistant content: "⏺ text" or "⏺"
-    if (line.startsWith("⏺")) {
+    // Assistant content: "⏺ text" or "⏺" (must start at column 0, no indentation)
+    if (/^⏺/.test(line)) {
       if (currentTurn?.role !== "assistant") {
         finalizeTurn();
         currentTurn = { role: "assistant", content: [] };
@@ -208,14 +210,22 @@ export function parseExport(input: string): ChatExport {
 
     // Tool output: line with "⎿"
     if (line.includes("⎿") && currentToolCall) {
-      const outputContent = line.replace(/.*⎿\s*/, "");
-      outputLines.push(outputContent);
+      const markerIndex = line.indexOf("⎿");
+      let contentStart = markerIndex + 1;
+      while (contentStart < line.length && line[contentStart] === " ") {
+        contentStart++;
+      }
+      outputBaseIndent = contentStart;
+      outputLines.push(line.slice(contentStart));
       continue;
     }
 
     // Indented continuation for tool output
     if (line.match(/^\s+\S/) && currentToolCall) {
-      outputLines.push(line.trim());
+      const stripped = line.length > outputBaseIndent
+        ? line.slice(outputBaseIndent)
+        : line.trimStart();
+      outputLines.push(stripped);
       continue;
     }
 
@@ -223,16 +233,13 @@ export function parseExport(input: string): ChatExport {
     if (line.match(/^\s+\S/) && currentTurn?.role === "assistant" && !currentToolCall) {
       const lastContent = currentTurn.content[currentTurn.content.length - 1];
       if (lastContent?.type === "text") {
-        // Keep indentation for tables, strip for regular text
-        const trimmed = line.trimStart();
-        const isTableLine = trimmed.startsWith("|") || /^[-|:]+$/.test(trimmed);
-        lastContent.text += "\n" + (isTableLine ? line : trimmed);
+        lastContent.text += "\n" + line;
       }
       continue;
     }
 
     // Continuation of user message (non-empty, non-prefixed)
-    if (currentTurn?.role === "user" && line.trim() && !line.startsWith("⏺") && !line.includes("⎿")) {
+    if (currentTurn?.role === "user" && line.trim() && !/^⏺/.test(line) && !line.includes("⎿")) {
       const lastContent = currentTurn.content[currentTurn.content.length - 1];
       if (lastContent?.type === "text") {
         lastContent.text += "\n" + line;

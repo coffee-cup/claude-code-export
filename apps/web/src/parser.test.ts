@@ -212,4 +212,25 @@ describe("parseExport", () => {
     expect(mcpTools.length).toBe(1);
     expect((mcpTools[0] as any).tool.params).toContain("file:///Users/jr");
   });
+
+  test("preserves indentation in tool output", () => {
+    const input = `
+> test
+
+⏺ Read(file.json)
+  ⎿  {
+       "name": "test",
+       "nested": {
+         "value": 123
+       }
+     }
+`.trim();
+
+    const result = parseExport(input);
+    const tool = result.turns[1]!.content.find(c => c.type === "tool");
+    expect(tool).toBeDefined();
+    const output = (tool as any).tool.output;
+    expect(output).toContain('  "name"');
+    expect(output).toContain('    "value"');
+  });
 });

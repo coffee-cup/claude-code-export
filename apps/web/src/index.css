@@ -237,6 +237,19 @@ body {
   margin: 0.5rem 0;
 }
 
+.output-block {
+  font-family: "SF Mono", Monaco, "Cascadia Code", Consolas, monospace;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-break: break-word;
+  background: var(--code-bg);
+  border-left: 3px solid var(--border);
+  padding: 0.5rem 0.75rem;
+  margin: 0.5rem 0;
+  color: var(--text-secondary);
+}
+
 /* Skill invocations */
 .skill-invocation {
   display: inline-flex;
